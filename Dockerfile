@@ -1,5 +1,5 @@
 # Builder
-FROM ubuntu:latest AS builder
+FROM ubuntu:18.04 AS builder
 
 RUN apt-get update
 RUN apt-get install -y unzip dos2unix wget
@@ -10,7 +10,8 @@ RUN wget -q --progress=bar:force:noscroll --show-progress https://download2.inte
 #RUN wget -q --progress=bar:force:noscroll --show-progress https://download2.interactivebrokers.com/installers/tws/stable-standalone/tws-stable-standalone-linux-x64.sh -O install-ibgateway.sh
 RUN chmod a+x install-ibgateway.sh
 
-RUN wget -q --progress=bar:force:noscroll --show-progress https://github.com/IbcAlpha/IBC/releases/download/3.8.1/IBCLinux-3.8.1.zip -O ibc.zip
+RUN wget -q --progress=bar:force:noscroll --show-progress https://github.com/IbcAlpha/IBC/releases/download/3.8.4-beta.2/IBCLinux-3.8.4-beta.2.zip -O ibc.zip
+#RUN wget -q --progress=bar:force:noscroll --show-progress https://github.com/IbcAlpha/IBC/releases/download/3.8.1/IBCLinux-3.8.1.zip -O ibc.zip
 RUN unzip ibc.zip -d /opt/ibc
 RUN chmod a+x /opt/ibc/*.sh /opt/ibc/*/*.sh
 
@@ -18,10 +19,10 @@ COPY run.sh run.sh
 RUN dos2unix run.sh
 
 # Application
-FROM ubuntu:latest
+FROM ubuntu:18.04
 
 RUN apt-get update
-RUN apt-get install -y x11vnc xvfb socat openjfx
+RUN apt-get install -y x11vnc xvfb socat openjfx vim
 
 WORKDIR /root
 
