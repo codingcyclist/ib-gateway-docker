@@ -7,9 +7,10 @@ RUN apt-get install -y unzip dos2unix wget
 WORKDIR /root
 
 RUN wget -q --progress=bar:force:noscroll --show-progress https://download2.interactivebrokers.com/installers/ibgateway/latest-standalone/ibgateway-latest-standalone-linux-x64.sh -O install-ibgateway.sh
+#RUN wget -q --progress=bar:force:noscroll --show-progress https://download2.interactivebrokers.com/installers/tws/stable-standalone/tws-stable-standalone-linux-x64.sh -O install-ibgateway.sh
 RUN chmod a+x install-ibgateway.sh
 
-RUN wget -q --progress=bar:force:noscroll --show-progress https://github.com/IbcAlpha/IBC/releases/download/3.8.4-beta.2/IBCLinux-3.8.4-beta.2.zip -O ibc.zip
+RUN wget -q --progress=bar:force:noscroll --show-progress https://github.com/IbcAlpha/IBC/releases/download/3.8.1/IBCLinux-3.8.1.zip -O ibc.zip
 RUN unzip ibc.zip -d /opt/ibc
 RUN chmod a+x /opt/ibc/*.sh /opt/ibc/*/*.sh
 
@@ -20,7 +21,7 @@ RUN dos2unix run.sh
 FROM ubuntu:latest
 
 RUN apt-get update
-RUN apt-get install -y x11vnc xvfb socat
+RUN apt-get install -y x11vnc xvfb socat openjfx
 
 WORKDIR /root
 
