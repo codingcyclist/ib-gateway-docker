@@ -22,15 +22,16 @@ RUN dos2unix run.sh
 FROM ubuntu:18.04
 
 RUN apt-get update
-RUN apt-get install -y x11vnc xvfb socat openjfx vim
+RUN apt-get install -y --fix-missing x11vnc xvfb socat openjfx #vim
 
 WORKDIR /root
 
 COPY --from=builder /root/install-ibgateway.sh install-ibgateway.sh
 RUN yes "" | ./install-ibgateway.sh
 
-RUN mkdir .vnc
-RUN x11vnc -storepasswd 1358 .vnc/passwd
+ARG VNC_PASSWORD "1234" #Default password is 1234; will be overwritten by what is set in the build arguments
+RUN mkdir .vnc && \
+    x11vnc -storepasswd $VNC_PASSWORD .vnc/passwd
 
 COPY --from=builder /opt/ibc /opt/ibc
 COPY --from=builder /root/run.sh run.sh
@@ -38,11 +39,5 @@ COPY --from=builder /root/run.sh run.sh
 COPY ibc_config.ini ibc/config.ini
 
 ENV DISPLAY :0
-#ENV TRADING_MODE paper
-#ENV TWS_PORT 4002
-#ENV VNC_PORT 5900
-
-EXPOSE $TWS_PORT
-EXPOSE $VNC_PORT
 
 CMD ./run.sh

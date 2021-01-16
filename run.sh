@@ -3,6 +3,14 @@
 set -e
 set -o errexit
 
+if [[ "$TRADING_MODE" = "paper" ]]; then
+    TWSUSERID=$IB_PAPER_USERNAME
+    TWSPASSWORD=$IB_PAPER_PASSWORD
+else
+    TWSUSERID=$IB_LIVE_USERNAME
+    TWSPASSWORD=$IB_LIVE_PASSWORD
+fi
+
 rm -f /tmp/.X0-lock
 
 Xvfb :0 &
